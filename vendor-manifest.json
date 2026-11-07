@@ -1,0 +1,19 @@
+{
+  "schema": "vendor-manifest/v1",
+  "updated": "2026-11-07",
+  "note": "外部技能方案登记表。scripts/sync-vendor.ps1 读取本文件执行更新。新增方案时同步追加一条。",
+  "vendors": [
+    {
+      "id": "anthropics-skills",
+      "prefix": "vendor/anthropics-skills",
+      "url": "https://github.com/anthropics/skills.git",
+      "ref": "main",
+      "strategy": "git-subtree-squash",
+      "skill_source": "vendor/anthropics-skills/skills",
+      "skill_count": 19,
+      "added_at": "2026-11-07",
+      "upstream_commit": "2c5958e",
+      "license": "见 vendor/anthropics-skills/THIRD_PARTY_NOTICES.md"
+    }
+  ]
+}

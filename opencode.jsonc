@@ -1,0 +1,11 @@
+// 本仓库的 OpenCode 技能源配置示例。
+// 用法：把下面的 skills 数组合并进 ~/.config/opencode/opencode.json(c)。
+// 路径可用绝对路径，或相对 OpenCode 当前工作目录的路径。
+// 每并入一个新外部方案，在数组里加一行指向其 skill_source。
+{
+  "$schema": "https://opencode.ai/config.json",
+  "skills": [
+    "F:/工作区/Ai-motion-comic/skills",
+    "F:/工作区/Ai-motion-comic/vendor/anthropics-skills/skills"
+  ]
+}
