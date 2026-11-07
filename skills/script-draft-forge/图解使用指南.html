@@ -1,0 +1,303 @@
+<h2 class="sr-only">编剧初稿锻造技能的通俗图解使用指南：全流程、钩子系统、五道质检关、Mode 3 按纲改编、模块系统与挑稿方法</h2>
+<style>
+.guide{font-family:var(--font-sans);max-width:720px;margin:0 auto;line-height:1.7;font-size:13.5px;color:var(--color-text-primary)}
+.guide h1{font-size:20px;font-weight:500;margin:8px 0 4px}
+.guide h2{font-size:15px;font-weight:500;margin:28px 0 10px;padding-bottom:6px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.guide h3{font-size:13.5px;font-weight:500;margin:16px 0 6px}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:12px;padding:14px 18px;margin:12px 0}
+.say{background:var(--color-background-secondary);border-radius:8px;padding:10px 14px;margin:8px 0;font-family:var(--font-mono);font-size:12.5px;color:var(--color-text-secondary)}
+.say b{color:var(--color-text-primary);font-weight:500}
+.tag{display:inline-block;background:var(--color-background-info);color:var(--color-text-info);font-size:11px;border-radius:4px;padding:1px 8px;margin:0 3px}
+.warn{border-left:3px solid #E24B4A;padding-left:12px;margin:10px 0;color:var(--color-text-secondary)}
+.ok{border-left:3px solid #1D9E75;padding-left:12px;margin:10px 0;color:var(--color-text-secondary)}
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin:10px 0}
+th{font-weight:500;text-align:left;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-secondary);padding:6px 8px}
+td{border-bottom:0.5px solid var(--color-border-tertiary);padding:6px 8px;vertical-align:top}
+.muted{color:var(--color-text-secondary)}
+.big{font-size:15px;font-weight:500}
+</style>
+
+<div class="guide">
+
+<h1>编剧初稿锻造 · 图解使用指南</h1>
+<p class="muted">给银时的通俗版说明书——它是什么、怎么用、图里全说清。</p>
+
+<h2>一、它是什么（一个类比）</h2>
+<div class="card">
+<p><span class="big">它像一个不知疲倦的编剧助理团队：</span></p>
+<p>你把素材（小说/对标剧/一个想法）和需求交给它，它就——</p>
+<p>① 先问清你要什么（不猜）　② 把素材拆解建档　③ 按你的要求排好钩子预算<br>
+④ 开好多台"打字机"同时出稿，每集好几个不同结构的版本<br>
+⑤ 自己先质检一遍：<b>能用的放左边，不能用的一律枪毙并写明死因</b></p>
+<p class="muted">最后你拿到的，是一摞<b>已经过了第一轮质检的多版初稿</b>——你只做最擅长的事：挑选和精修。</p>
+</div>
+
+<h2>二、全流程图解：六步流水线</h2>
+<svg viewBox="0 0 680 500" width="100%" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>六步流水线图</title>
+<desc>从需求登记到交付的六步：需求登记、钩子预算、锚点建档、多版初稿、闸门A验收、交付初稿包。</desc>
+<defs>
+<marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+<g onclick="sendPrompt('解释一下 S0 需求登记要填什么')">
+<rect x="40" y="20" width="200" height="60" rx="10" fill="#3C3489" stroke="#AFA9EC" stroke-width="0.5"/>
+<text x="140" y="44" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#CECBF6">S0 需求登记 + 素材体检</text>
+<text x="140" y="64" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#AFA9EC">问清你要什么 · 素材五维拆解</text>
+</g>
+<path d="M240 50 L268 50" fill="none" stroke="#888780" stroke-width="1.5" marker-end="url(#a1)"/>
+<g>
+<rect x="272" y="20" width="180" height="60" rx="10" fill="#3C3489" stroke="#AFA9EC" stroke-width="0.5"/>
+<text x="362" y="44" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#CECBF6">S1 钩子预算</text>
+<text x="362" y="64" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#AFA9EC">按你的要求排每集钩子配额</text>
+</g>
+<path d="M452 50 L480 50" fill="none" stroke="#888780" stroke-width="1.5" marker-end="url(#a1)"/>
+<g>
+<rect x="484" y="20" width="156" height="60" rx="10" fill="#3C3489" stroke="#AFA9EC" stroke-width="0.5"/>
+<text x="562" y="44" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#CECBF6">S2 锚点建档</text>
+<text x="562" y="64" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#AFA9EC">人物小传·金手指·术语表</text>
+</g>
+<path d="M562 80 L562 108" fill="none" stroke="#888780" stroke-width="1.5" marker-end="url(#a1)"/>
+<g>
+<rect x="384" y="112" width="256" height="60" rx="10" fill="#3C3489" stroke="#AFA9EC" stroke-width="0.5"/>
+<text x="512" y="136" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#CECBF6">S3 多版初稿（每集 2-3 版）</text>
+<text x="512" y="156" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#AFA9EC">不同结构 × 不同引擎 · 结构差异化才是真多版</text>
+</g>
+<path d="M384 142 L356 142" fill="none" stroke="#888780" stroke-width="1.5" marker-end="url(#a1)"/>
+<g>
+<rect x="40" y="112" width="312" height="60" rx="10" fill="#712B13" stroke="#F0997B" stroke-width="0.5"/>
+<text x="196" y="136" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#F5C4B3">S4 闸门A · 五道质检（杀稿不修稿）</text>
+<text x="196" y="156" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#F0997B">不过 = 枪毙 + 写死因 · 精修只花在过关稿上</text>
+</g>
+<path d="M196 172 L196 200" fill="none" stroke="#888780" stroke-width="1.5" marker-end="url(#a1)"/>
+<g>
+<rect x="80" y="204" width="232" height="56" rx="10" fill="#04342C" stroke="#5DCAA5" stroke-width="0.5"/>
+<text x="196" y="226" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#9FE1CB">S5 交付初稿包</text>
+<text x="196" y="246" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#5DCAA5">多版 + 体检报告 + 三档分级推荐</text>
+</g>
+<path d="M40 300 L640 300" stroke="#888780" stroke-width="0.5" stroke-dasharray="3 4"/>
+<text x="40" y="326" font-size="12" fill="#888780">下面两个框是"重跑机制"——出错不用从头再来：</text>
+<g>
+<rect x="40" y="344" width="292" height="56" rx="10" fill="#444441" stroke="#888780" stroke-width="0.5"/>
+<text x="186" y="366" text-anchor="middle" dominant-baseline="central" font-size="12.5" font-weight="500" fill="#D3D1C7">断点续跑</text>
+<text x="186" y="386" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#B4B2A9">中断了 → 从没做完的那步继续</text>
+</g>
+<g>
+<rect x="348" y="344" width="292" height="56" rx="10" fill="#444441" stroke="#888780" stroke-width="0.5"/>
+<text x="494" y="366" text-anchor="middle" dominant-baseline="central" font-size="12.5" font-weight="500" fill="#D3D1C7">单集重跑（Mode 2）</text>
+<text x="494" y="386" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#B4B2A9">"第5集重出" → 上轮死因变禁令</text>
+</g>
+<text x="40" y="446" font-size="12" fill="#888780">图例：</text>
+<rect x="90" y="438" width="14" height="14" rx="3" fill="#3C3489" stroke="#AFA9EC" stroke-width="0.5"/>
+<text x="112" y="449" font-size="11.5" fill="#B4B2A9" dominant-baseline="central">准备阶段</text>
+<rect x="182" y="438" width="14" height="14" rx="3" fill="#712B13" stroke="#F0997B" stroke-width="0.5"/>
+<text x="204" y="449" font-size="11.5" fill="#B4B2A9" dominant-baseline="central">质检（可杀稿）</text>
+<rect x="296" y="438" width="14" height="14" rx="3" fill="#04342C" stroke="#5DCAA5" stroke-width="0.5"/>
+<text x="318" y="449" font-size="11.5" fill="#B4B2A9" dominant-baseline="central">交付</text>
+<rect x="372" y="438" width="14" height="14" rx="3" fill="#444441" stroke="#888780" stroke-width="0.5"/>
+<text x="394" y="449" font-size="11.5" fill="#B4B2A9" dominant-baseline="central">重跑机制</text>
+<text x="40" y="482" font-size="11.5" fill="#888780">点击紫色框可直接追问对应阶段的细节。</text>
+</svg>
+
+<h2>三、钩子系统图解：一集 90 秒里钩子放在哪</h2>
+<p>钩子不是"想加就加"，它有固定的<b>工位</b>。下面是一集的标准钩位时间轴：</p>
+<svg viewBox="0 0 680 300" width="100%" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>四级钩位时间轴</title>
+<desc>一集90秒的时间轴：前3秒开头锁人钩，每15-20秒一个节拍钩，中段情绪波动，集尾卡点钩，长线钩贯穿全剧。</desc>
+<defs>
+<marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+<rect x="40" y="40" width="600" height="34" rx="8" fill="#444441" stroke="#888780" stroke-width="0.5"/>
+<text x="340" y="57" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#D3D1C7">一集 90 秒（时间从左到右）</text>
+<g>
+<circle cx="46" cy="120" r="11" fill="#E24B4A"/>
+<text x="46" y="124" text-anchor="middle" dominant-baseline="central" font-size="10" fill="#fff" font-weight="500">1</text>
+<text x="66" y="116" font-size="12" font-weight="500" fill="#F0997B">开头锁人钩 · 前 3 秒</text>
+<text x="66" y="134" font-size="11" fill="#B4B2A9">强度必须 ≥4：打脸/背叛/遇险/对峙，观众感知不到就重写</text>
+</g>
+<path d="M46 131 L46 158" fill="none" stroke="#888780" stroke-width="1" marker-end="url(#a2)"/>
+<g>
+<circle cx="46" cy="172" r="11" fill="#EF9F27"/>
+<text x="46" y="176" text-anchor="middle" dominant-baseline="central" font-size="10" fill="#412402" font-weight="500">2</text>
+<text x="66" y="168" font-size="12" font-weight="500" fill="#FAC775">节拍钩 · 每 15-20 秒一个</text>
+<text x="66" y="186" font-size="11" fill="#B4B2A9">小冲突/小爽点/小悬念，不让观众在半路走神</text>
+</g>
+<path d="M46 183 L46 210" fill="none" stroke="#888780" stroke-width="1" marker-end="url(#a2)"/>
+<g>
+<circle cx="46" cy="224" r="11" fill="#E24B4A"/>
+<text x="46" y="228" text-anchor="middle" dominant-baseline="central" font-size="10" fill="#fff" font-weight="500">3</text>
+<text x="66" y="220" font-size="12" font-weight="500" fill="#F0997B">卡点钩 · 集尾</text>
+<text x="66" y="238" font-size="11" fill="#B4B2A9">切在"差一步"：门被推开的前一秒、表白说出口的前一刻</text>
+</g>
+<g>
+<rect x="440" y="100" width="200" height="164" rx="10" fill="#3C3489" stroke="#AFA9EC" stroke-width="0.5"/>
+<circle cx="462" cy="122" r="10" fill="#AFA9EC"/>
+<text x="462" y="126" text-anchor="middle" dominant-baseline="central" font-size="10" fill="#26215C" font-weight="500">4</text>
+<text x="478" y="122" font-size="12" font-weight="500" fill="#CECBF6" dominant-baseline="central">长线钩 · 贯穿全剧</text>
+<text x="456" y="150" font-size="11" fill="#AFA9EC">《越狱》的纹身式：一个实物/约定/身世，</text>
+<text x="456" y="168" font-size="11" fill="#AFA9EC">每集出现一次、每次多透露一点，</text>
+<text x="456" y="186" font-size="11" fill="#AFA9EC">意义延迟揭晓——观众为它追完全剧。</text>
+<text x="456" y="212" font-size="11" fill="#CECBF6">台账里必须写清"第几集兑现"，</text>
+<text x="456" y="230" font-size="11" fill="#CECBF6">埋了不收 = 契诃夫的枪没响 = 杀。</text>
+</g>
+</svg>
+
+<h3>钩子还要"换着用"（防疲劳规则）</h3>
+<div class="card">
+<p>同一个套路连用三集，观众第四集就不猜了。所以：</p>
+<table>
+<tr><th>规则</th><th>大白话</th></tr>
+<tr><td>信息差三模式</td><td>每个钩子要么观众比角色知道得多（替他着急），要么少（跟他一起查），要么一样多（一起紧张）——三种换着来</td></tr>
+<tr><td>六母型轮换</td><td>不寻常的事 / 问句 / 预告危险 / 危险逼近 / 神秘人 / 危机——一集至少两种，相邻两集的集尾钩不许同款</td></tr>
+<tr><td>松紧节拍</td><td>重钩之后必须给一口气喘（松场），全程高潮观众会麻</td></tr>
+<tr><td>给一半卡一半</td><td>每兑现一个旧钩子必须同时抛出新钩子——只给不卡观众走，只卡不给观众恨</td></tr>
+</table>
+</div>
+
+<h2>四、五道质检关图解：它替你毙掉什么</h2>
+<svg viewBox="0 0 680 340" width="100%" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>五道质检关</title>
+<desc>闸门A的五道关：情理门、钩子回提、台词抽检、情绪lint、一致性核对，各配一个被杀的例子。</desc>
+<defs>
+<marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+<g>
+<rect x="40" y="20" width="600" height="52" rx="10" fill="#712B13" stroke="#F0997B" stroke-width="0.5"/>
+<text x="60" y="40" font-size="13" font-weight="500" fill="#F5C4B3">第 1 关 · 情理门（最核心）</text>
+<text x="60" y="60" font-size="11.5" fill="#F0997B">毙例：普通高中生弹指弹飞霸王龙 → 能力不匹配，杀。元婴大佬弹 → 过。</text>
+</g>
+<g>
+<rect x="40" y="84" width="600" height="52" rx="10" fill="#712B13" stroke="#F0997B" stroke-width="0.5"/>
+<text x="60" y="104" font-size="13" font-weight="500" fill="#F5C4B3">第 2 关 · 钩子回提四维</text>
+<text x="60" y="124" font-size="11.5" fill="#F0997B">对初稿反向提取钩子：预算花完没？类型换着用没？强度够没？台账全没？</text>
+</g>
+<g>
+<rect x="40" y="148" width="600" height="52" rx="10" fill="#712B13" stroke="#F0997B" stroke-width="0.5"/>
+<text x="60" y="168" font-size="13" font-weight="500" fill="#F5C4B3">第 3 关 · 台词盲还原抽检</text>
+<text x="60" y="188" font-size="11.5" fill="#F0997B">遮住名字抽 3 句台词——猜不出是谁说的，说明台词不合人设，杀。</text>
+</g>
+<g>
+<rect x="40" y="212" width="600" height="52" rx="10" fill="#712B13" stroke="#F0997B" stroke-width="0.5"/>
+<text x="60" y="232" font-size="13" font-weight="500" fill="#F5C4B3">第 4 关 · 情绪名称词 lint</text>
+<text x="60" y="252" font-size="11.5" fill="#F0997B">写"他很愤怒"不算数——情绪要靠行为和台词让观众感受到。"脸色一变"只是动作。</text>
+</g>
+<g>
+<rect x="40" y="276" width="600" height="52" rx="10" fill="#712B13" stroke="#F0997B" stroke-width="0.5"/>
+<text x="60" y="296" font-size="13" font-weight="500" fill="#F5C4B3">第 5 关 · 一致性核对</text>
+<text x="60" y="316" font-size="11.5" fill="#F0997B">人物言行对照小传、术语零变体——防"第 40 集忘了人物关系"的 AI 老毛病。</text>
+</g>
+</svg>
+<div class="ok"><b>每个判定都带证据</b>：行号、原文引用、数值——不是"感觉不错"，是"第 37 行，台词还原失败：杀"。</div>
+
+<h2>五、怎么跟它说话（照抄版）</h2>
+<div class="card">
+<p><span class="big">万能公式：<b>需求 + 素材</b>（先说需求，再丢素材）</span></p>
+<div class="say"><b>场景1 从零开始：</b>「帮我出个初稿包，20集，每集1分半，投红果，男频都市逆袭」+ 素材</div>
+<div class="say"><b>场景2 自己定钩子：</b>「钩子要身份揭露型，每集双卡点，其他你定」<span class="tag">零强制数字</span></div>
+<div class="say"><b>场景3 不管平台：</b>「不挂平台，按我自己的节奏，重点做人物弧光」</div>
+<div class="say"><b>场景4 重出某集：</b>「第5集重出几版，上版卡点太弱」<span class="tag">死因变禁令</span></div>
+<div class="say"><b>场景5 即兴套路：</b>「按武侠宗门套路来一版」<span class="tag">自动存成模块，下次复用</span></div>
+<div class="say"><b>场景6 按纲改编：</b>「小说原文 + 编剧大纲/细纲在这，按这个纲出初稿」<span class="tag">Mode 3 · 结构听细纲</span></div>
+</div>
+
+<h2>六、Mode 3：小说原文 + 大纲/细纲 → 按纲出初稿</h2>
+<div class="card">
+<p><span class="big">适用：整本小说 + 编剧已经把细纲写好了</span></p>
+<p class="muted">Mode 1 只收一段素材简介。整本小说直接塞进上下文会爆窗，而且模型会自作主张"优化"编剧拍过的结构。Mode 3 就是为此加的第三条路。</p>
+<table>
+<tr><th>步骤</th><th>做什么</th><th>为什么</th></tr>
+<tr><td>N0 入库</td><td>原文按章切片（CH001…）、细纲逐条编号 EP001-B01…</td><td>长文本不全文入上下文；逐条才有得查</td></tr>
+<tr><td>逐集生成包</td><td>packets\ep001.md = 本集细纲 + 本集原文切片 + 人物/术语/前情 + 钩子预算</td><td>每集只读这一包，衔接靠读文件不靠记忆</td></tr>
+<tr><td>N3 生成</td><td><b>结构听细纲、事实听原文</b>；多版只在呈现层差异化</td><td>不许改事件顺序、不许新增大事件、不许改人名设定</td></tr>
+<tr><td>N4 验收</td><td>多跑一份覆盖报告 GA-06~08</td><td>必留细纲条目没落地直接判杀，不认"都写到了"的自报</td></tr>
+</table>
+<div class="warn"><b>差异化降级说明：</b>细纲锁死结构后，同集两版不能再靠"换结构模板"差异化，只能换切入点 / 场面调度 / 台词密度 / 卡点切法，并在文件头写明差异轴。只有你说「细纲仅供参考」才恢复 Mode 1 的自由结构。</div>
+<div class="ok"><b>交给你拍板的四类事：</b>推定分配的章节切片、原文里找不到依据的细纲条目、原文与细纲冲突、疑似新增大事件——脚本只摆证据，不替你决定。</div>
+<p class="muted">格式不会写就跑：<span class="say" style="display:block">python scripts/source_outline.py init-template &lt;目录&gt;</span>细纲里写「原文第3-5章」可精确指定本集用哪几章；写「锚点：宁清和|手表」让覆盖校验更准。只给大纲不给细纲也能跑（事件锁定）。</p>
+</div>
+
+<h2>七、拿到初稿包后：三步挑稿法</h2>
+<div class="card">
+<p><span class="big">第 1 步 · 看索引</span><br>打开 <b>00_初稿包索引.md</b>：每集版本清单 + 过/杀判定 + 三档分级——<b>讲故事（三流）/ 讲人物（二流）/ 讲情怀（一流）</b>，一流标注的优先看。</p>
+<p><span class="big">第 2 步 · 只在过关版里挑</span></p>
+<div class="warn"><b>铁律：杀稿不修稿。</b>被杀的版本带着死因（如"情理门挂：能力越界"），不要试图精修救活——修烂稿的时间够重出三版。</div>
+<p><span class="big">第 3 步 · 不满意就点名重跑</span><br>「第 N 集重出，要悬念倒叙版」——比"再改改"快十倍。挑完合并精修自己来（或让会话模型帮忙：'把 ep005 的 A 版和 C 版合并'）。</p>
+</div>
+
+<h2>八、模块系统：像装插件一样扩展</h2>
+<svg viewBox="0 0 680 240" width="100%" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>模块系统示意图</title>
+<desc>核心不可变，四类模块即插即用：平台包、题材包、风格包、流程包，即兴需求沉淀为新模块。</desc>
+<rect x="40" y="30" width="280" height="180" rx="14" fill="#26215C" stroke="#534AB7" stroke-width="0.5" opacity="0.85"/>
+<text x="180" y="58" text-anchor="middle" font-size="13" font-weight="500" fill="#CECBF6">核心（永不改动）</text>
+<text x="180" y="82" text-anchor="middle" font-size="11.5" fill="#AFA9EC">CR 编剧方法论 · HK 钩子系统</text>
+<text x="180" y="102" text-anchor="middle" font-size="11.5" fill="#AFA9EC">DR 一致性 · MR 引擎路由</text>
+<text x="180" y="136" text-anchor="middle" font-size="11" fill="#CECBF6">专业度全在这里——</text>
+<text x="180" y="156" text-anchor="middle" font-size="11" fill="#CECBF6">换引擎、换平台都不用动它</text>
+<g>
+<rect x="370" y="30" width="130" height="52" rx="10" fill="#04342C" stroke="#5DCAA5" stroke-width="0.5"/>
+<text x="435" y="50" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="500" fill="#9FE1CB">平台包 ST</text>
+<text x="435" y="68" text-anchor="middle" dominant-baseline="central" font-size="10.5" fill="#5DCAA5">六平台结构模板</text>
+</g>
+<g>
+<rect x="510" y="30" width="130" height="52" rx="10" fill="#04342C" stroke="#5DCAA5" stroke-width="0.5"/>
+<text x="575" y="50" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="500" fill="#9FE1CB">题材包 genre</text>
+<text x="575" y="68" text-anchor="middle" dominant-baseline="central" font-size="10.5" fill="#5DCAA5">武侠/赘婿/复仇…</text>
+</g>
+<g>
+<rect x="370" y="106" width="130" height="52" rx="10" fill="#04342C" stroke="#5DCAA5" stroke-width="0.5"/>
+<text x="435" y="126" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="500" fill="#9FE1CB">风格包 style</text>
+<text x="435" y="144" text-anchor="middle" dominant-baseline="central" font-size="10.5" fill="#5DCAA5">台词腔调/画面风</text>
+</g>
+<g>
+<rect x="510" y="106" width="130" height="52" rx="10" fill="#04342C" stroke="#5DCAA5" stroke-width="0.5"/>
+<text x="575" y="126" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="500" fill="#9FE1CB">流程包 process</text>
+<text x="575" y="144" text-anchor="middle" dominant-baseline="central" font-size="10.5" fill="#5DCAA5">市场/情绪/按纲改编 SO</text>
+</g>
+<path d="M320 120 L366 56" fill="none" stroke="#5DCAA5" stroke-width="1.5" marker-end="url(#a3)"/>
+<path d="M320 120 L506 56" fill="none" stroke="#5DCAA5" stroke-width="1.5" marker-end="url(#a3)"/>
+<path d="M320 120 L366 132" fill="none" stroke="#5DCAA5" stroke-width="1.5" marker-end="url(#a3)"/>
+<path d="M320 120 L506 132" fill="none" stroke="#5DCAA5" stroke-width="1.5" marker-end="url(#a3)"/>
+<text x="440" y="196" text-anchor="middle" font-size="11.5" fill="#888780">模块即插即用；说一句"按XX套路来"，就长出一个新模块</text>
+<text x="440" y="216" text-anchor="middle" font-size="11.5" fill="#888780">不挂任何模块也能跑（通用默认）</text>
+</svg>
+
+<h2>九、文件地图：拿到东西去哪找</h2>
+<table>
+<tr><th>位置</th><th>放什么</th><th>你什么时候看</th></tr>
+<tr><td>outputs\00_初稿包索引.md</td><td>每集版本清单+判定+分级</td><td><b>挑稿第一站</b></td></tr>
+<tr><td>outputs\01_体检报告.md</td><td>每版判定证据+死因</td><td>想看某版为什么被杀</td></tr>
+<tr><td>outputs\01_体检报告_脚本.md</td><td>GA-01~05 脚本数值（轮次/字数/人设）</td><td>核对硬指标时</td></tr>
+<tr><td>outputs\ep{集}_{版型}_v{n}.md</td><td>初稿本体（头部标注引擎/日期）</td><td>挑中后细读</td></tr>
+<tr><td>pipeline\00_需求与体检.md</td><td>你的需求表+素材拆解</td><td>对需求有疑问时</td></tr>
+<tr><td>pipeline\01_钩子预算表.md</td><td>每集钩子配额+台账</td><td>调整钩子要求时</td></tr>
+<tr><td>pipeline\manifest.json</td><td>进度状态</td><td>中断续跑时（自动读）</td></tr>
+<tr><td>pipeline\12_纲解析报告.md <span class="tag">Mode 3</span></td><td>逐集细纲编号、章节切片、告警</td><td>确认细纲解析对不对</td></tr>
+<tr><td>pipeline\packets\ep001.md <span class="tag">Mode 3</span></td><td>本集唯一输入包（细纲+原文切片+锚点）</td><td>想知道模型到底读了什么</td></tr>
+<tr><td>outputs\01_体检报告_纲源.md <span class="tag">Mode 3</span></td><td>GA-06~08 细纲覆盖/原文忠实/新增事件</td><td>看哪条细纲没落地</td></tr>
+<tr><td>pipeline\dispatch-report.md <span class="tag">MR-08</span></td><td>逐档任务、模型、状态、产物</td><td>想知道哪一档跑了哪几集</td></tr>
+<tr><td>pipeline\dispatch-cost.md <span class="tag">MR-08</span></td><td>token 用量对账 + 成本自检</td><td>跑完看有没有烧冤枉钱</td></tr>
+</table>
+
+<h2>十、六档位自动调度（可选执行层）</h2>
+<div class="card">
+<p><span class="big">一句话：让六个档位真的各干各的活</span></p>
+<p>OpenCode 一个会话只使用一个模型，所以默认要手动分批切档。<b>scripts\engine_dispatch.py</b> 按 MR-07 的六个端点逐档直调 API，自动排任务、写产物、记账、断点续跑。</p>
+<p class="muted">命令链：init-config → plan --episodes 1-10 → run（演练）→ run --live（真跑）→ status / verify</p>
+<p><b>三条硬规矩</b>：① 不加 <code>--live</code> 是零调用零费用的演练，产物带占位标记、verify 一律拒绝验收；② 中断重跑跳过已完成任务，失败不写产物、下游自动 blocked；③ 成本报告只报 token 用量，没填单价不编造金额。</p>
+<p class="muted">它只换「谁来生成」，不替你挑稿、不合并、不改稿、不出终稿。前置：六个端点配齐且重启过宿主。</p>
+</div>
+
+<h2>十一、第一次跑的建议</h2>
+<div class="card">
+<p><span class="big">小目标试跑：5 集短剧 + 明确平台 + 一种题材</span></p>
+<p>约 10-20 分钟走完全流程。重点不是稿子质量，是<b>看懂索引和体检报告的结构</b>——第一次跑完你就知道，哪些需求值得在开头说死（集数/时长/平台/钩子类型），哪些可以放手让它自己定。</p>
+<p class="muted">然后再上正片。祝锻造顺利。</p>
+</div>
+
+</div>

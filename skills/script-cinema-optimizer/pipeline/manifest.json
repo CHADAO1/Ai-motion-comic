@@ -1,0 +1,11 @@
+{
+  "stages": {
+    "s0": { "status": "pending", "output": "pipeline/00_slices.md" },
+    "s1": { "status": "pending", "output": "pipeline/01_diagnosis.md" },
+    "s2": { "status": "pending", "output": "pipeline/02_rewritten/" },
+    "s3": { "status": "pending", "output": "pipeline/03_localized/" },
+    "s4": { "status": "pending", "output": "pipeline/04_visual/" },
+    "s5": { "status": "pending", "output": "outputs/优化剧本_完成版.md" }
+  },
+  "updated": ""
+}

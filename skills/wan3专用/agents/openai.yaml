@@ -1,0 +1,4 @@
+interface:
+  display_name: "Film Language Operating System"
+  short_description: "Turn stories into Wan3.0-ready director storyboard prompts"
+  default_prompt: "Use $wan3专用. Resolve version and policy, front-load facts/geometry/timing, run one fast preflight, freeze passing long-form segments, and cold-review only explicit or critical final nodes; return copy-ready five-section prompts."
