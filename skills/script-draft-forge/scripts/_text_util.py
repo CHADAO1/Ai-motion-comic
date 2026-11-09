@@ -33,7 +33,7 @@ BODY_END_MARKERS = ("## 改编登记", "## 对白调整登记", "## v3 复查处
 # 动机（2026-11-06 第10-12集回归实测）：把 `闸门A.md` 写进 outputs/ 后，
 # 下一轮 --draft outputs/ 会把报告本身当稿件扫进去（「轮次 2 / FAIL 2」），
 # 结论被自己污染。旧规则只排 00_/01_ 前缀与「报告/索引」，漏了 03_、
-# 「闸门A.md」「00_授权检查.md」这类。文件名 + 首部标题双层判定，宁可漏收
+# 「闸门A.md」这类。文件名 + 首部标题双层判定，宁可漏收
 # 一份可疑文件，也不要把报告算进验收分母。
 REPORT_NAME_PREFIX = re.compile(r"^\d{2}[-_]")
 REPORT_NAME_WORDS = (
@@ -44,7 +44,7 @@ REPORT_NAME_WORDS = (
 )
 REPORT_TITLE_RE = re.compile(
     r"^#{1,2}[^\n]*(?:报告|检查|验收|覆盖|索引|登记|规划|体检|清单|"
-    r"留痕|快照|自检|净稿|闸门|分集规划门|授权检查)")
+    r"留痕|快照|自检|净稿|闸门|分集规划门)")
 REPORT_GENERATED_RE = re.compile(r"由\s*`?scripts/[^\s`]+`?\s*生成")
 
 
@@ -249,13 +249,12 @@ def selftest():
             "# 闸门A 脚本化硬指标报告\n\n> 由 `scripts/check_gate_a.py` 生成\n\n"
             "**结论：未通过**\n", encoding="utf-8")
         (d / "03_覆盖验收_E10-12.md").write_text("# 按纲改编覆盖验收报告\n", encoding="utf-8")
-        (d / "00_授权检查.md").write_text("# S0 授权检查（SH-01/02）\n", encoding="utf-8")
         (d / "01_分集规划检查.md").write_text("# S4 分集规划门\n", encoding="utf-8")
         got = [x.name for x in iter_draft_files(d)]
         assert got == ["ep001_A_v1.md", "第10集.md"], got
         assert [x.name for x in iter_draft_files(d / "闸门A.md")] == ["闸门A.md"], \
             "显式单文件传参应被尊重"
-    print("[PASS] _text_util selftest：闸门A/覆盖验收/授权/规划报告不入扫描 / "
+    print("[PASS] _text_util selftest：闸门A/覆盖验收/规划报告不入扫描 / "
           "无编号前缀的报告名也被排除 / 显式单文件不受限 / 非标准稿件名不误杀")
     return 0
 

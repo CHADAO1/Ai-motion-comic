@@ -1,12 +1,25 @@
 # CHANGELOG — script-draft-forge
 
+## v1.2.4 · 2026-11-09 · 授权模块剥离（SH-01/02 整体移除，净稿保留）
+
+**动机**：用户拍板「剥离编剧技能的授权模块，彻底去除」。S0 每次出稿都要求先填九字段《00_授权登记表》并通过 `check_authorization.py` 阻断检查，是流水线最大的固定摩擦；IP 授权核对本就不是脚本能判的事（SH-02 自己也声明「只核字段不判法律效力」）。净稿清洗（SH-03~07）与出稿质量直接挂钩，用户拍板保留。
+
+**改动**：
+1. 删除 scripts/check_authorization.py 及 ingest 的 `--authorization` 参数、ingest-manifest.json 的 authorization 字段、相关 WARN 提示——授权登记/阻断从流水线里消失，S0 不再因授权拦稿。
+2. `modules/process/source-hygiene.md` 更名为「净稿（原文清洗）」，删除 SH-01/02 两节；SH-01/02 编号永久弃用，SH-03~07 编号不变以免连锁改号。SH-07 验收门改为只核净稿报告落盘与待确认清单处置。
+3. 摘要、S0/S4 流水线表、产物目录树、Mode 3 工作流、preflight 清单、模块注册表、MAINTENANCE、README 同步去除全部授权阻断表述；净稿门成为 S0 唯一前置硬门。
+4. `_text_util.py` / `check_gate_a.py` 自检取消「00_授权检查.md」fixture；`_text_util.py` 报告标题关键词移除「授权检查」（旧项目里已生成的授权检查报告仍会被「检查/报告」类文件名兜住，不会混进验收分母）。
+5. **净稿全部能力不变**：SH-L01~06 词表、乱码/板块头只标记、`--exclude-patterns`、`--apply-sections`、超上限降级，照旧。
+
+**边界（不夸大）**：本版只剥授权，不改任何验收判据；SH-03~07 规则编号与词表未动；旧项目 pipeline 里遗留的 `00_授权登记.md`／`00_授权检查.md` 文件不做删除，也不参与验收（报告类过滤兜底）；本版未重出任何稿件，未跑 LIVE。
+
 ## v1.2.3 · 2026-11-06 · 回归遗留四项口径修复（报告自扫 / 授权表命名 / packets 预算行 / 中间批次集数）
 
 **动机**：`第10-12集链路回归测试报告.md` §4 登记了 6 个问题，v1.2.2 修掉最严重的 2 个（GA-12 假绿、净稿词表），剩 4 条只登记未改，用户拍板「继续修」后落地本版。四条都属**口径不一致**，不是新增能力，故不加模块、不加门禁编号。
 
 **改动（每条=回滚单元）**：
 1. **报告自扫污染**：`scripts/_text_util.py` 新增 `is_draft_candidate()` / `iter_draft_files()`，文件名（任意 `NN_` 编号前缀 + 报告/索引/检查/验收/规划/登记…关键词）与首部标题双层判定；`check_gate_a.py`、`source_outline.py check`、`check_adapt.py` 三个入口共用。旧规则只排 `00_/01_` 与「报告/索引」，漏了 `闸门A.md`、`03_覆盖验收_E10-12.md`。`check_adapt.py` 增 `--no-filter`（默认过滤显式传入的报告类文件，打印 SKIP 清单；过滤后为空返回 2）。显式单文件传参仍被尊重。
-2. **授权表自定义名判 BLOCK**：`scripts/check_authorization.py` 新增 `discover_registry()`。优先级＝显式 `--registry` > 默认名 `00_授权登记.md` > pipeline 内自动发现（名字含「授权登记／授权表／授权与净稿」，排除检查报告/模板/副本，内容排除「阻断项／字段快照」）。多候选按字段完整度取最全者，并在报告 `infos` 列出全部候选要求人工确认唯一来源；缺表时报告列出目录内 .md 清单。检查报告永不被误认为登记表。默认名与九字段判据不变。
+2. **授权表自定义名判 BLOCK**：scripts/check_authorization.py（已于 v1.2.4 删除）新增 `discover_registry()`。优先级＝显式 `--registry` > 默认名 `00_授权登记.md` > pipeline 内自动发现（名字含「授权登记／授权表／授权与净稿」，排除检查报告/模板/副本，内容排除「阻断项／字段快照」）。多候选按字段完整度取最全者，并在报告 `infos` 列出全部候选要求人工确认唯一来源；缺表时报告列出目录内 .md 清单。检查报告永不被误认为登记表。默认名与九字段判据不变。
 3. **packets 钩子预算行缺失**：`scripts/source_outline.py` 新增 `episode_plan_hooks()`。`build_packets()` 在 `01_钩子预算表.md` 缺失或只有占位内容（未命中本集行）但有《逐集三要素表》时，钩子预算行改为「尾钩取自《…》「尾钩」列，与下方三要素行同源」＋尾钩文本，**不再谎报「S1 尚未产出本集预算行」**；两者都没有时才提示补 S1。三要素行照常注入。
 4. **中间批次集数口径**：`scripts/check_episode_plan.py` 新增 `parse_episode_spec()` / `scope_of()`。`--episodes` 纯数字 N＝全剧口径（要求 1..N 齐备，向后兼容）；区间 `10-12`／逗号列表＝**批次口径**（只要求这批齐备）；不给＝只查表内集号连续。`init-template --episodes 10-12` 直接生成第 10–12 行。报告与 JSON 增 `episode_scope` 字段，非法串返回 exit 2。`engine_dispatch.py plan --episodes` 本来就是区间语法，未改。
 
@@ -40,7 +53,7 @@
 **改动（每条=回滚单元）**：
 1. 新增 `modules/process/source-hygiene.md`（SH-01~07）：授权链 S0 必填阻断（九字段、短剧与漫剧双覆盖、渠道不得「待定」）、**只核字段不判法律效力**、净稿副本与不默删、剔除类别置信分层、乱码只标记、番外整段剔除须显式开启、验收门。注册进 `_registry.md`，**全部 Mode 默认挂载，授权阻断不可卸载**。
 2. 新增 `reference/source_clean.rules.json`：整行噪声 5 类默认 remove，板块头与疑似乱码默认 flag；`apply_sections` / `max_removed_ratio` 等可调。项目专属规则走 `--exclude-patterns`，不改默认词表。
-3. 新增 `scripts/check_authorization.py`（init-template / check / selftest）：缺登记表或字段 → **exit 1 阻断**，报告固定带法律效力边界声明。
+3. 新增 scripts/check_authorization.py（已于 v1.2.4 删除；init-template / check / selftest）：缺登记表或字段 → **exit 1 阻断**，报告固定带法律效力边界声明。
 4. `scripts/source_outline.py ingest` 接入净稿：新增 `--clean-config` / `--exclude-patterns` / `--no-clean` / `--apply-sections` / `--authorization`；产出 `pipeline/00_净稿报告.md`（逐条原始行号＋原句＋规则 ID＋理由、原文件 sha1、两套行号口径说明），`source-index.json` 增 `cleaning`，`10_原文索引.md` 增净稿小节，`ingest-manifest.json` 记授权状态。**原文件只读不改**；乱码/板块头默认只标记；删除超上限整体降级为不删。
 5. 新增 `modules/process/episode-plan.md`（EP-01~07）：S1 必产《逐集三要素表》＝集／本集核心事件／明确冲突／本集信息增量／尾钩／出处；信息增量定义为**新知道的事实**（非钩子复述、非「爽点升级」）、相邻集不得逐字相同、出处回指、S4 合并门缺一即杀、**生成期注入 packets**。
 6. 新增 `scripts/check_episode_plan.py`（init-template / check / selftest）：机检集号连续、三要素齐备率、相邻集逐字重复（FAIL）、增量复述核心事件/尾钩与非汉字出处（INFO 候选）。齐备率 <100% 不得写「HK-09 通过」。

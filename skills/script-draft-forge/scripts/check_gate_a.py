@@ -379,7 +379,6 @@ def selftest():
             "# 闸门A 脚本化硬指标报告\n\n> 由 `scripts/check_gate_a.py` 生成\n\n"
             "**结论：未通过**\n", encoding="utf-8")
         (d / "03_覆盖验收_E10-12.md").write_text("# 按纲改编覆盖验收报告\n", encoding="utf-8")
-        (d / "00_授权检查.md").write_text("# S0 授权检查（SH-01/02）\n", encoding="utf-8")
         assert [x.name for x in draft_files(d)] == ["ep001_A_v1.md"], list(draft_files(d))
         print("[PASS] selftest：报告/索引/无编号报告名/03_ 前缀验收报告均不进入初稿扫描")
 

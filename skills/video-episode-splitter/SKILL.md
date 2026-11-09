@@ -22,7 +22,7 @@ when_to_use: 当用户要把一部整片（电影、长视频、合稿成片）�
 
 ```bash
 # ffmpeg（脚本会自动定位，这里只是确认可用）
-"$FFMPEG" -version | head -1
+ffmpeg -version | head -1
 
 # openpyxl（读 .xlsx 用；只用 CSV 可跳过）
 python -c "import openpyxl; print('openpyxl', openpyxl.__version__)"
@@ -30,7 +30,7 @@ python -c "import openpyxl; print('openpyxl', openpyxl.__version__)"
 
 | 项 | 状态 |
 |---|---|
-| ffmpeg | 由 `$FFMPEG` 环境变量或 PATH 定位（本机未预装，需自备 ffmpeg / ffprobe） |
+| ffmpeg | 已装到 `C:\ffmpeg\bin\`（gyan.dev essentials 9.0.2，已加入用户 PATH），脚本自动识别 |
 | openpyxl | 见下方安装 |
 
 **ffmpeg 定位顺序（脚本内置，无需配置）**：`$FFMPEG` → PATH → `<技能目录>/../ffmpeg/bin/` → 各盘符 `X:\ffmpeg\bin\`。

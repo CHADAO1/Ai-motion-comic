@@ -37,7 +37,7 @@
 | process/emotion-heatmap.md | process | S3+S4 | EH- | 内置（对标创一情绪热力图） |
 | process/source-outline.md | process | S0+S3+S4 | SO- | 内置（Mode 3 按纲改编自动挂载；Mode 1/2 不挂） |
 | process/dialogue-pass.md | process | S0+S3.5+S4 | DP- | 内置（Mode 3 按纲改编自动挂载；Mode 1/2 显式声明挂载，可卸载） 2026-11-06 |
-| process/source-hygiene.md | process | S0 阻断 + N0 入库 + S5 留痕 | SH- | 内置（全部 Mode 默认挂载；**授权阻断不可卸载**） 2026-11-06 |
+| process/source-hygiene.md | process | N0 入库 + S0 素材净稿 + S5 留痕 | SH- | 内置（全部 Mode 默认挂载；净稿模块，原「授权登记/字段核对」两节已于 2026-11-09 剥离删除） 2026-11-06 |
 | process/episode-plan.md | process | S1 产出 + S3 注入 + S4 合并验收 | EP- | 内置（全部 Mode 默认挂载） 2026-11-06 |
 
 （用户自建模块按行追加：模块路径 | 类型 | 挂载点 | 前缀 | 日期）

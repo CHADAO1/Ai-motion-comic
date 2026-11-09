@@ -18,7 +18,7 @@
 | EH-01~06 | `modules/process/emotion-heatmap.md` | 情绪热力图（逐场标注、热力图、转折点沉淀、生成注入、库校验、批量导入） |
 | SO-01~08 | `modules/process/source-outline.md` | 按纲改编（输入优先级、原文切片、结构锁定、逐条落地、无依据条目、冲突登记、覆盖验收、生成包续跑；Mode 3 自动挂载） |
 | DP-01~08 | `modules/process/dialogue-pass.md` | 对白二次调整（S3.5 独立工序、单句 8-15 字、书面语转口语、朗读顺口、旁白三禁、叙述腔直搬禁令、A/B 同旁白禁令、验收登记；Mode 3 自动挂载，Mode 1/2 显式声明） |
-| SH-01~07 | `modules/process/source-hygiene.md` | 授权与净稿（S0 必填阻断、只核字段不判法律效力、净稿副本与不默删、剔除类别置信分层、乱码只标记、板块剔除须显式开启、验收门；`scripts/check_authorization.py` + `source_outline.py ingest`；登记表自定义名自动发现、多候选须人工确认唯一来源） |
+| SH-03~07 | `modules/process/source-hygiene.md` | 净稿（净稿副本与不默删、剔除类别置信分层、乱码只标记、板块剔除须显式开启、验收门；`source_outline.py ingest`；原「授权登记/字段核对」两节已于 2026-11-09 剥离删除，对应脚本已从包内移除） |
 | EP-01~08 | `modules/process/episode-plan.md` | 分集规划三要素（S1 必产物、字段定义、信息增量＝新增事实、相邻集不重复、出处回指、S4 合并门缺一即杀、生成期注入 packets、**集数口径：全剧 N vs 中间批次 10-12**；`scripts/check_episode_plan.py`；三要素表单独成文件时 packets 钩子预算行同源派生） |
 | 无编号（共用口径） | `scripts/_text_util.py` | 三验收入口共用的稿件文件识别：`is_draft_candidate()` / `iter_draft_files()` 排除编号前缀、报告/索引/登记类文件名与首部标题，防门禁报告写进 `outputs/` 后被下一轮自扫成稿；`check_adapt.py --no-filter` 可关闭 |
 | ST-00~07 | `modules/platform/structure-templates.md` | 平台结构包（可选挂载模块） |

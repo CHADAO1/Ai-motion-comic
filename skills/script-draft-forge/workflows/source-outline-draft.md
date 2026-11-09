@@ -16,12 +16,10 @@ python scripts/source_outline.py ingest \
     --outline <细纲.md> --outline <大纲.md> \
     --pipeline <剧本目录>/pipeline \
     [--chapter-pattern "<自定义章节正则>"] [--packet-max-chars 16000] \
-    [--exclude-patterns "<项目专属广告行正则>"] [--no-clean] [--apply-sections] \
-    [--authorization <00_授权登记.md 或自动发现的自定义名>]
+    [--exclude-patterns "<项目专属广告行正则>"] [--no-clean] [--apply-sections]
 ```
 
 - `--source` / `--outline` 可重复，也可直接给目录；细纲与大纲可同一文件（`# 大纲` / `# 细纲` 分节）。
-- **授权在前**：S0 先跑 `check_authorization.py check`，exit 1 即阻断；`--authorization` 只把登记表路径记进 manifest，不在此判法律效力（SH-01/02）。
 - **净稿默认启用**：内置词表 v1.1 剔整行转载站噪声（番外/作者附言/乱码只标记不删，SH-04~06；`SH-L06` 专删「本站所有小说为转载作品…」整行免责声明），项目专属规则用 `--exclude-patterns` 追加；`--no-clean` 关闭、`--apply-sections` 才整段剔除番外。删除逐条登记在 `00_净稿报告.md`，其行号是**清洗前原文件行号**，与索引表的净稿行号分属两套口径。
 - 首次不会写格式？先 `python scripts/source_outline.py init-template <目录>`，照模板填。
 - 产物：`pipeline\原文纯文本.txt`、`source-index.json`、`10_原文索引.md`、`00_净稿报告.md`、`outline.json`、`12_纲解析报告.md`、`packets\ep{NNN}.md`、`ingest-manifest.json`。
@@ -39,7 +37,7 @@ python scripts/source_outline.py ingest \
 | 细纲约束 | 默认 **锁定结构**；仅当用户明说「细纲仅供参考」才改「事件锁定/自由结构」 |
 | 单集时长 / 题材 / 风格 / 钩子自定义 / 挂载模块 / 引擎 | 同 Mode 1 |
 
-五维拆解（CR-01）的证据**必须来自 `10_原文索引.md` + 原文切片**（已净稿，行号以净稿为准），每条带章节 ID 与行号；候选人名回原文核对后才写进小传。对标归因（CR-11）若纲里提到对标作品照做。模块挂载：自动挂 `process/source-outline` + `process/dialogue-pass`，另有全部 Mode 默认挂载的 `process/source-hygiene`（授权/净稿）与 `process/episode-plan`（三要素），其余同 Mode 1。产物仍是 `pipeline\00_需求与体检.md`，另须有 `00_授权登记.md` 与 `00_净稿报告.md`。
+五维拆解（CR-01）的证据**必须来自 `10_原文索引.md` + 原文切片**（已净稿，行号以净稿为准），每条带章节 ID 与行号；候选人名回原文核对后才写进小传。对标归因（CR-11）若纲里提到对标作品照做。模块挂载：自动挂 `process/source-outline` + `process/dialogue-pass`，另有全部 Mode 默认挂载的 `process/source-hygiene`（净稿）与 `process/episode-plan`（三要素），其余同 Mode 1。产物仍是 `pipeline\00_需求与体检.md`，另须有 `00_净稿报告.md`。
 
 ## S1 钩子预算 / S2 锚点建档
 
@@ -99,13 +97,9 @@ python scripts/check_episode_plan.py check \
     --plan <剧本目录>/pipeline/01_分集规划表.md --episodes <集数或区间，如 10-12> \
     --out <剧本目录>/outputs/01_分集规划检查.md \
     --json <剧本目录>/outputs/01_分集规划检查.json
-
-python scripts/check_authorization.py check \
-    --pipeline <剧本目录>/pipeline \
-    --out <剧本目录>/outputs/00_授权检查.md
 ```
 
-判定顺序：preflight 全清单（含 **SH-01 授权阻断 / SH-07 净稿留痕 / EP-06 合并门**）→ **GA-12 稿件形态门（先判有没有戏）** → GA-01~05 → **GA-09~11 ＋ 语义门 G1~G9** → **GA-06~08**。三要素齐备率 <100% 或授权检查 exit 1，同样不得写「验收通过」。任一 FAIL 判杀并记死因（杀稿不修稿，铁律 1）；**GA-12 命中写「不予验收」，与内容违规分开记死因**。**G9／GA-10／GA-11 任一命中即不得写「验收通过」**。GA-06 的「锚点命中」只是漏项预警，仍需在体检报告里逐条写语义判定 + 行号证据；INFO 逐条进 S5 决策点清单。全部通过才写《初稿包索引》，每集标「结构锁定」+ 差异轴。
+判定顺序：preflight 全清单（含 **SH-07 净稿留痕 / EP-06 合并门**）→ **GA-12 稿件形态门（先判有没有戏）** → GA-01~05 → **GA-09~11 ＋ 语义门 G1~G9** → **GA-06~08**。三要素齐备率 <100% 同样不得写「验收通过」。任一 FAIL 判杀并记死因（杀稿不修稿，铁律 1）；**GA-12 命中写「不予验收」，与内容违规分开记死因**。**G9／GA-10／GA-11 任一命中即不得写「验收通过」**。GA-06 的「锚点命中」只是漏项预警，仍需在体检报告里逐条写语义判定 + 行号证据；INFO 逐条进 S5 决策点清单。全部通过才写《初稿包索引》，每集标「结构锁定」+ 差异轴。
 
 > `check_gate_a.py` 与 `check_adapt.py` 均默认跑 GA-12；DRY 演练稿、无场次无对白的空稿不会被写成「验收通过」。形态门只量形态，不设字数下限、不判质量。
 
@@ -114,7 +108,7 @@ python scripts/check_authorization.py check \
 ## S5 交付（Mode 1 三件套 + 两条）
 
 1. 铁律 8 三件套照做：打开全部版本文本与索引、贴每集推荐版正文摘录、给挑稿决策点清单。
-2. **额外呈现脚本报告**：`01_体检报告_脚本.md`、`01_体检报告_纲源.md`、`01_验收.json`、`01_语义门禁.json`、`01_分集规划检查.md`、`00_授权检查.md`，以及 `pipeline/04_对白调整登记.md`、`pipeline/00_净稿报告.md` 与 `12_纲解析报告.md`。授权状态未核实只写「已登记字段，法律效力待权利方确认」，不得写「环节 1 已完成」（SH-02/07）。
+2. **额外呈现脚本报告**：`01_体检报告_脚本.md`、`01_体检报告_纲源.md`、`01_验收.json`、`01_语义门禁.json`、`01_分集规划检查.md`，以及 `pipeline/04_对白调整登记.md`、`pipeline/00_净稿报告.md` 与 `12_纲解析报告.md`。净稿待确认清单未处置完，不得写「环节 1 已完成」（SH-07）。
 3. **决策点清单必须含四类**（SO-05/06）：①推定分配的章节切片 ②无原文依据的细纲条目 ③原文与细纲冲突 ④GA-08 疑似新增事件。每条给编号与建议，不替用户拍板。
 4. 交付说明写清：结构锁定意味着什么、可以点名重跑哪个差异轴、要改结构必须明说「细纲仅供参考」回 Mode 1。
 5. 初稿包即终点，不合并、不精修、不指路下游（review/audit.md 全清单 ✅，含 A12/A13）。

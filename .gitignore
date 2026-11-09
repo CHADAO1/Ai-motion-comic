@@ -1,0 +1,12 @@
+# Python 运行产物
+__pycache__/
+*.pyc
+*.pyo
+
+# 本次技能输出 / 临时素材（不进技能仓库）
+/tmm_novel.rar
+/tmm_novel/
+
+# 系统文件
+Thumbs.db
+.DS_Store

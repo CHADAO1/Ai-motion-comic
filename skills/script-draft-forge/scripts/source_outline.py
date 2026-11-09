@@ -37,8 +37,7 @@
   - 脚本不判断新增事件是否合法，只列证据，定性由用户/闸门A决定。
   - 净稿清洗只删整行高置信噪声；**乱码行与板块头默认只标记不删**（SH-05/06）。
     删除逐条登记到 00_净稿报告.md，行号为**清洗前原文件行号**，与索引表（净稿行号）分属两套口径。
-  - 授权链不在此脚本判定法律效力；S0 阻断由 check_authorization.py 承担，
-    ingest 只把登记状态写进 manifest 并提示，读取原文做分析不等于出稿。
+    授权登记/阻断模块已于 2026-11-09 剥离删除，本脚本不再处理授权；读取原文做分析不等于出稿。
 """
 import argparse
 import csv
@@ -1219,10 +1218,6 @@ def cmd_ingest(args):
         data = json.loads(op.read_text(encoding="utf-8"))
     d, n = build_packets(data, idx, pipeline, args.packet_max_chars)
     print("[OK] 生成包：%s（%d 集，单集原文上限 %d 字符）" % (d, n, args.packet_max_chars))
-    auth = getattr(args, "authorization", None)
-    auth_state = ("已提供登记表 %s（字段与法律效力由 S0 的 check_authorization.py / 权利方确认）" % auth
-                  if auth and Path(auth).exists()
-                  else "未登记：S0 须跑 check_authorization.py check，未过阻断不得出稿")
     ipath = pipeline / "ingest-manifest.json"
     ipath.write_text(json.dumps({
         "generated": datetime.now().isoformat(timespec="seconds"),
@@ -1230,11 +1225,8 @@ def cmd_ingest(args):
         "packet_max_chars": args.packet_max_chars,
         "chapter_pattern": args.chapter_pattern,
         "cleaning": idx.get("cleaning", {}),
-        "authorization": auth_state,
         "note": "S1/S2 完成后跑 refresh 重打生成包；原文/纲变更需重新 ingest",
     }, ensure_ascii=False, indent=2), encoding="utf-8")
-    if auth is None:
-        print("[WARN] 未提供授权登记表：读取原文做分析 ≠ 出稿；S0 须跑授权阻断检查（SH-01）")
     return 0
 
 
@@ -1400,8 +1392,9 @@ def selftest():
         assert "番外一" in clean_text and "锟斤拷" in clean_text, "板块头/乱码行默认不删"
         assert "SH-L01" in clean_rep and "原始行号" in clean_rep and "SH-S01" in clean_rep
         assert "SH-L06" in clean_rep, "SH-L06 删除须逐条登记规则 ID"
-        assert json.loads((pl / "ingest-manifest.json").read_text(encoding="utf-8"))["authorization"].startswith("未登记")
-        print("[PASS] 净稿：删除 3 行并登记（含 SH-L06 转载站声明）/ 乱码与番外只标记 / 两套行号口径 / 授权未登记留痕")
+        assert "authorization" not in json.loads(
+            (pl / "ingest-manifest.json").read_text(encoding="utf-8")), "授权字段应已剥离"
+        print("[PASS] 净稿：删除 3 行并登记（含 SH-L06 转载站声明）/ 乱码与番外只标记 / 两套行号口径 / 授权字段已剥离")
 
         # --no-clean 与 --exclude-patterns 的向后兼容
         pl4 = root / "pipeline4"
@@ -1419,7 +1412,7 @@ def selftest():
             chapter_pattern, packet_max_chars = None, 16000
             no_clean = False
             exclude_patterns = ["番外一 旧事"]
-            clean_config, apply_sections, authorization = None, False, None
+            clean_config, apply_sections = None, False
         assert cmd_ingest(E()) == 0
         assert "番外一" not in (pl4 / "原文纯文本.txt").read_text(encoding="utf-8")
         print("[PASS] --no-clean 原样入库 / --exclude-patterns 追加规则生效")
@@ -1428,7 +1421,7 @@ def selftest():
         class F:
             source, outline, pipeline = [str(novel)], [str(fine)], str(pl4)
             chapter_pattern, packet_max_chars = None, 16000
-            no_clean, exclude_patterns, clean_config, authorization = False, [], None, None
+            no_clean, exclude_patterns, clean_config = False, [], None
             apply_sections = True
         assert cmd_ingest(F()) == 0
         assert "半天没说出话" not in (pl4 / "原文纯文本.txt").read_text(encoding="utf-8")
@@ -1445,7 +1438,7 @@ def selftest():
         class G:
             source, outline, pipeline = [str(novel)], [str(fine)], str(pl4)
             chapter_pattern, packet_max_chars = None, 16000
-            no_clean, exclude_patterns, authorization = False, [], None
+            no_clean, exclude_patterns = False, []
             clean_config, apply_sections = str(cfg), False
         assert cmd_ingest(G()) == 0
         assert "未完待续" in (pl4 / "原文纯文本.txt").read_text(encoding="utf-8"), "超上限应降级不删"
@@ -1551,7 +1544,6 @@ def main():
     ing.add_argument("--no-clean", action="store_true", help="关闭净稿清洗，原文原样入库")
     ing.add_argument("--apply-sections", action="store_true",
                      help="启用番外/作者附言整段剔除（默认只标记不删，SH-06）")
-    ing.add_argument("--authorization", help="S0 授权登记表路径（只记录状态，不判法律效力）")
 
     ref = sub.add_parser("refresh", help="S1/S2 建档后重新打包生成包")
     ref.add_argument("--pipeline", required=True)
